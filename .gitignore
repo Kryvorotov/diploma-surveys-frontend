@@ -2,7 +2,7 @@
 # dependencies
 .idea/
 .vscode/
-.node_modules/
+node_modules/
 .pnp.js
 
 # testing
