@@ -1,5 +1,6 @@
 import {Route, Routes} from "react-router-dom";
-import Surveys from "./screens/Surveys";
+import SurveysList from "./screens/SurveysList";
+import CreateSurvey from "./screens/CreateSurvey";
 import { ToastContainer } from 'react-toastify';
 
 function App() {
@@ -7,7 +8,8 @@ function App() {
     <div className="App">
       <ToastContainer />
       <Routes>
-        <Route path={'/'} element={<Surveys/>} />
+        <Route path={'/'} element={<SurveysList/>} />
+        <Route path={'/create-survey'} element={<CreateSurvey/>} />
       </Routes>
     </div>
   );
