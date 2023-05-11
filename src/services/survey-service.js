@@ -23,3 +23,23 @@ export const createSurveys = (payload) => async (dispatch) => {
   }
 };
 
+export const editSurvey = (payload) => async (dispatch) => {
+  try {
+    await axios.put('/surveys/', payload)
+    return true;
+  } catch (err) {
+    alert(err.response?.data.message)
+    console.error(err);
+  }
+};
+
+export const deleteSurvey = (payload) => async (dispatch) => {
+  try {
+    await axios.delete(`/surveys/${payload}`)
+    return true;
+  } catch (err) {
+    alert(err.response?.data.message)
+    console.error(err);
+  }
+};
+

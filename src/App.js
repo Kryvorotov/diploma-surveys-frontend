@@ -10,6 +10,7 @@ function App() {
       <Routes>
         <Route path={'/'} element={<SurveysList/>} />
         <Route path={'/create-survey'} element={<CreateSurvey/>} />
+        <Route path={'/edit/:surveyId'} element={<CreateSurvey/>} />
       </Routes>
     </div>
   );
