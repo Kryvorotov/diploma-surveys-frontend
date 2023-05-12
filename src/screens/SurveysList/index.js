@@ -1,17 +1,27 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './styles.module.sass';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchSurveys} from "../../services/survey-service";
 import {isPast} from "../../utils/date";
 import {Link} from "react-router-dom";
+import {Container, ToggleButton, ToggleButtonGroup} from "@mui/material";
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import ReorderIcon from '@mui/icons-material/Reorder';
+import DefaultListView from "./list-views/DefaultListView";
+import SortedListView from "./list-views/SortedListView";
 
 function SurveysList() {
   const dispatch = useDispatch();
   const { surveys } = useSelector((state) => state.surveysReducer);
 
-  const finished = surveys.filter(survey => isPast(survey.endAt))
-  const planned = surveys.filter(survey => !isPast(survey.startAt) && !isPast(survey.endAt))
-  const current = surveys.filter(survey => !isPast(survey.endAt) && isPast(survey.startAt))
+
+
+    const [listView, setListView] = useState('default')
+
+    const handleListView = (event, newView) => {
+        if (newView)
+            setListView(newView)
+    }
 
   useEffect(() => {
     dispatch(fetchSurveys());
@@ -19,21 +29,26 @@ function SurveysList() {
 
   return (
     <div className={styles.container}>
-      <h1>Опитування</h1>
-      <br/>
-      <Link to="/create-survey">Створити нове</Link>
-      <h1>Заплановані</h1>
-      <ul>
-        {planned.map(survey => <li key={survey.id}><Link to={`/edit/${survey.id}`}>{survey.title}</Link></li>)}
-      </ul>
-      <h1>В процессі</h1>
-      <ul>
-        {current.map(survey => <li key={survey.id}><Link to={`/survey/${survey.id}`}>{survey.title}</Link></li>)}
-      </ul>
-      <h1>Завершені</h1>
-      <ul>
-        {finished.map(survey => <li key={survey.id}><Link to={`/survey/${survey.id}`}>{survey.title}</Link></li>)}
-      </ul>
+        <Container>
+            <ToggleButtonGroup
+                value={listView}
+                exclusive
+                onChange={handleListView}
+                size="small"
+                aria-label="list view"
+            >
+                <ToggleButton value="default" aria-label="default list">
+                    <ReorderIcon />
+                </ToggleButton>
+                <ToggleButton value="sorted" aria-label="sorted-list">
+                    <FormatListBulletedIcon />
+                </ToggleButton>
+            </ToggleButtonGroup>
+        </Container>
+
+        {listView === 'default' && <DefaultListView surveys={surveys} />}
+        {listView === 'sorted' && <SortedListView surveys={surveys} />}
+
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 import axios from "axios";
-import {setSurveys} from "../redux/slices/surveysSlice";
+import {setSurvey, setSurveys} from "../redux/slices/surveysSlice";
 
 axios.defaults.baseURL = 'http://localhost:4066'
 
@@ -12,6 +12,15 @@ export const fetchSurveys = () => async (dispatch) => {
     console.error(err);
   }
 };
+
+export const getSurveyById = (payload) => async (dispatch) => {
+  try {
+    const { data } = await axios.get(`/surveys/${payload}`)
+    dispatch(setSurvey(data))
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 export const createSurveys = (payload) => async (dispatch) => {
   try {

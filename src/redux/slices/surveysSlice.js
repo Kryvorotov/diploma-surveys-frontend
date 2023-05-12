@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const initialState = {
   surveys: [],
+  survey: {}
 };
 
 export const surveysSlice = createSlice({
@@ -9,8 +10,9 @@ export const surveysSlice = createSlice({
   initialState,
   reducers: {
     setSurveys: (state, { payload }) => ({ ...state, surveys: payload }),
+    setSurvey: (state, { payload }) => ({...state, survey: payload})
   },
 });
 
-export const { setSurveys } = surveysSlice.actions;
+export const { setSurveys, setSurvey } = surveysSlice.actions;
 export default surveysSlice.reducer;
