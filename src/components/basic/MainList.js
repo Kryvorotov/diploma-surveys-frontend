@@ -2,7 +2,7 @@ import React from 'react';
 import {IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
 import {getDate, isPast} from "../../utils/date";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import {EDIT_ROUTE, SURVEY_ROUTE} from "../../utils/consts";
+import {EDIT_ROUTE, SURVEY_FORM_ROUTE, SURVEY_ROUTE} from "../../utils/consts";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PollIcon from "@mui/icons-material/Poll";
@@ -25,11 +25,13 @@ const MainList = ({surveys}) => {
                                     />
                                 </IconButton>
                             )}
-                            <IconButton>
-                                <EditIcon
-                                    onClick={() => navigate(EDIT_ROUTE + '/' + survey.id)}
-                                />
-                            </IconButton>
+                            {!isPast(survey.startAt) && (
+                                <IconButton>
+                                    <EditIcon
+                                        onClick={() => navigate(EDIT_ROUTE + '/' + survey.id)}
+                                    />
+                                </IconButton>
+                            )}
                             <IconButton>
                                 <DeleteIcon/>
                             </IconButton>
@@ -37,7 +39,7 @@ const MainList = ({surveys}) => {
                     }
                 >
                     <ListItemButton
-                        onClick={() => navigate(SURVEY_ROUTE + '/' + survey.id)}
+                        onClick={() => navigate((isPast(survey.endAt) ? SURVEY_ROUTE : SURVEY_FORM_ROUTE) + '/' + survey.id)}
                         disabled={!isPast(survey.startAt) && !isPast(survey.endAt)}
                     >
                         <ListItemIcon>

@@ -31,6 +31,16 @@ export const getSurveyQuestions = (payload) => async (dispatch) => {
   }
 }
 
+export const createSurveyComment = (payload) => async (dispatch) =>  {
+  try {
+    await axios.post('/comments', payload)
+    return true;
+  } catch (err) {
+    alert(err.response?.data.message)
+    console.error(err);
+  }
+};
+
 export const getSurveyComment = (payload) => async (dispatch) => {
   try {
     const { data } = await axios.get(`/comments/survey/${payload}`)
@@ -70,3 +80,12 @@ export const deleteSurvey = (payload) => async (dispatch) => {
   }
 };
 
+export const createSurveyResponses = (payload) => async (dispatch) =>  {
+  try {
+    await axios.post('/responses', payload)
+    return true;
+  } catch (err) {
+    alert(err.response?.data.message)
+    console.error(err);
+  }
+};
