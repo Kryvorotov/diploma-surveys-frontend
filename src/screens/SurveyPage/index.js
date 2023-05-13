@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import {Box, Container, Divider, Paper, Tab, Tabs, Typography} from "@mui/material";
-import {getSurveyById} from "../../services/survey-service";
+import {Box, Button, Container, Divider, Paper, Tab, Tabs, Typography} from "@mui/material";
+import {getSurveyById, getSurveyComment, getSurveyQuestions} from "../../services/survey-service";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getDate} from "../../utils/date";
@@ -13,9 +13,13 @@ const SurveyPage = () => {
     const dispatch = useDispatch()
     const { surveyId } = useParams()
     const { survey } = useSelector((state) => state.surveysReducer);
+    const { questions } = useSelector((state) => state.surveysReducer);
+    const { comments } = useSelector((state) => state.surveysReducer);
 
     useEffect(() => {
         dispatch(getSurveyById(surveyId))
+        dispatch(getSurveyQuestions(surveyId))
+        dispatch(getSurveyComment(surveyId))
     }, [])
 
     TabPanel.propTypes = {
@@ -66,10 +70,14 @@ const SurveyPage = () => {
                             {survey.title}
                         </Typography>
                     </h1>
-                    <div>
-                        <Typography variant="h5" color="gray">
-                            {getDate(survey.createdAt)}
+                    <div style={{display: 'flex', gap: 10, alignItems: 'center'}}>
+
+                        <Typography variant="h6" color="gray">
+                            Закінчується {getDate(survey.endAt)}
                         </Typography>
+                        <Button variant="contained">
+                            Export as PDF
+                        </Button>
                     </div>
                 </div>
                 <Divider />
@@ -82,10 +90,10 @@ const SurveyPage = () => {
                         </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
-                        <OverviewTab />
+                        <OverviewTab questions={questions} />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        <QuestionsTab questions={survey.questions} />
+                        <QuestionsTab questions={questions} comments={comments} />
                     </TabPanel>
                     <TabPanel value={value} index={2}>
                         <UsersTab />
