@@ -8,6 +8,10 @@ import PropTypes from "prop-types";
 import OverviewTab from "../../components/tabs/OverviewTab";
 import QuestionsTab from "../../components/tabs/QuestionsTab";
 import UsersTab from "../../components/tabs/UsersTab";
+import jsPDF from "jspdf";
+import {getAverage, getMostPopular} from "../../utils/math";
+import {getScores, getTextResponse} from "../../utils/responses";
+
 
 const SurveyPage = () => {
     const dispatch = useDispatch()
@@ -15,6 +19,7 @@ const SurveyPage = () => {
     const { survey } = useSelector((state) => state.surveysReducer);
     const { questions } = useSelector((state) => state.surveysReducer);
     const { comments } = useSelector((state) => state.surveysReducer);
+    const responses = questions.map(question => question.responses).flat();
 
     useEffect(() => {
         dispatch(getSurveyById(surveyId))
@@ -61,6 +66,28 @@ const SurveyPage = () => {
         setValue(newValue);
     };
 
+    const exportAsPdf = () => {
+        const doc = new jsPDF();
+        doc.text("Title: " + survey.title, 10, 10);
+        doc.line(10,13, 400, 13)
+        doc.text("Survey ID: " + survey.id, 10, 20);
+        doc.text("Created At: " + getDate(survey.createdAt), 10, 30);
+        doc.text("Start At: " + getDate(survey.startAt), 10, 40);
+        doc.text("Ends At: " + getDate(survey.endAt), 10, 50);
+        doc.line(10,53, 400, 53)
+        doc.text("Most Popular answer: " + getMostPopular(getScores(responses)), 10, 60);
+        doc.text("Average answer: " + getAverage(getScores(responses)), 10, 70);
+        doc.text("Responses: " + responses.length, 10, 80);
+        doc.line(10,83, 400, 83)
+        doc.text("Questions: ", 10, 90);
+        let i = 100
+        questions.map(question => {
+            doc.text(question.text + ': ' + getAverage(getScores(question.responses)), 10, i)
+            i = i + 10
+        })
+        doc.save((survey.title + "").toLowerCase().replace(" ", "-") + ".pdf");
+    }
+
     return (
         <Paper>
             <Container>
@@ -75,7 +102,7 @@ const SurveyPage = () => {
                         <Typography variant="h6" color="gray">
                             Закінчується {getDate(survey.endAt)}
                         </Typography>
-                        <Button variant="contained">
+                        <Button variant="contained" onClick={exportAsPdf}>
                             Export as PDF
                         </Button>
                     </div>
@@ -90,7 +117,7 @@ const SurveyPage = () => {
                         </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
-                        <OverviewTab questions={questions} />
+                        <OverviewTab questions={questions} survey={survey} />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                         <QuestionsTab questions={questions} comments={comments} />

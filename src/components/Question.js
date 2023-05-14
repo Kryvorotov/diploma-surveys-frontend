@@ -13,6 +13,9 @@ const Question = ({question}) => {
                 <Typography variant="h5" component="div" style={{marginBottom: 10}}>
                     {question.text}
                 </Typography>
+                <Typography variant="p" color="grey" component="div" style={{marginBottom: 10}}>
+                    {question.responses.length} Відповідей
+                </Typography>
                 <Divider />
                 {(question.responses && question.responses.length > 0) && (
                 <div>

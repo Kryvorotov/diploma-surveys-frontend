@@ -4,7 +4,7 @@ export const initialState = {
   surveys: [],
   survey: {},
   questions: [],
-  comments: {}
+  comments: {},
 };
 
 export const surveysSlice = createSlice({
@@ -14,7 +14,7 @@ export const surveysSlice = createSlice({
     setSurveys: (state, { payload }) => ({ ...state, surveys: payload }),
     setSurvey: (state, { payload }) => ({...state, survey: payload}),
     setQuestions: (state, { payload }) => ({...state, questions: payload}),
-    setComments: (state, { payload }) => ({...state, comments: payload})
+    setComments: (state, { payload }) => ({...state, comments: payload}),
   },
 });
 

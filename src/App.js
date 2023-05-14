@@ -4,6 +4,8 @@ import CreateSurvey from "./screens/CreateSurvey";
 import { ToastContainer } from 'react-toastify';
 import NavBar from "./components/NavBar";
 import SurveyPage from "./screens/SurveyPage";
+import {Alert} from "@mui/material";
+import Alerts from "./components/Alerts";
 import SurveyFormPage from './screens/SurveyFormPage'
 
 function App() {
@@ -11,6 +13,7 @@ function App() {
     <div className="App">
       <ToastContainer />
         <NavBar />
+        <Alerts />
       <Routes>
         <Route path={'/'} element={<SurveysList/>} />
         <Route path={'/create-survey'} element={<CreateSurvey/>} />
@@ -18,6 +21,7 @@ function App() {
         <Route path={'/survey/:surveyId'} element={<SurveyPage />} />
         <Route path={'/survey-form/:surveyId'} element={<SurveyFormPage />} />
       </Routes>
+
     </div>
   );
 }
