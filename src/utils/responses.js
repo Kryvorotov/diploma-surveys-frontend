@@ -18,3 +18,11 @@ export const getTextResponse = (response_number) => {
             return ''
     }
 }
+
+export const responsesList = [
+    { score: 5, label: 'Дуже добре' },
+    { score: 4, label: 'Добре' },
+    { score: 3, label: 'Нормально' },
+    { score: 2, label: 'Погано' },
+    { score: 1, label: 'Дуже погано' },
+]

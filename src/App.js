@@ -6,6 +6,7 @@ import NavBar from "./components/NavBar";
 import SurveyPage from "./screens/SurveyPage";
 import {Alert} from "@mui/material";
 import Alerts from "./components/Alerts";
+import SurveyFormPage from './screens/SurveyFormPage'
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
         <Route path={'/'} element={<SurveysList/>} />
         <Route path={'/create-survey'} element={<CreateSurvey/>} />
         <Route path={'/edit/:surveyId'} element={<CreateSurvey/>} />
-          <Route path={'/survey/:surveyId'} element={<SurveyPage />} />
+        <Route path={'/survey/:surveyId'} element={<SurveyPage />} />
+        <Route path={'/survey-form/:surveyId'} element={<SurveyFormPage />} />
       </Routes>
 
     </div>
