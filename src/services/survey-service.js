@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import axios from "axios";
 import {setComments, setQuestions, setSurvey, setSurveys} from "../redux/slices/surveysSlice";
+import {setAlert} from "../redux/slices/alertsSlice";
 
 axios.defaults.baseURL = 'http://localhost:4066'
 
@@ -9,7 +10,7 @@ export const fetchSurveys = () => async (dispatch) => {
     const { data } = await axios.get('/surveys/')
     dispatch(setSurveys(data));
   } catch (err) {
-    console.error(err);
+    dispatch(setAlert({ message: 'Server error! Cannot get list of surveys.', alertType: 'error'}))
   }
 };
 
@@ -18,7 +19,7 @@ export const getSurveyById = (payload) => async (dispatch) => {
     const { data } = await axios.get(`/surveys/${payload}`)
     dispatch(setSurvey(data))
   } catch (err) {
-    console.error(err);
+    dispatch(setAlert({ message: 'Server error! Cannot get survey info.', alertType: 'error'}))
   }
 }
 
@@ -27,7 +28,7 @@ export const getSurveyQuestions = (payload) => async (dispatch) => {
     const { data } = await axios.get(`/surveys/${payload}/questions`)
     dispatch(setQuestions(data))
   } catch (err) {
-    console.log(err)
+    dispatch(setAlert({ message: 'Server error! Cannot get list of survey questions.', alertType: 'error'}))
   }
 }
 
@@ -36,7 +37,7 @@ export const getSurveyComment = (payload) => async (dispatch) => {
     const { data } = await axios.get(`/comments/survey/${payload}`)
     dispatch(setComments(data))
   } catch (err) {
-    console.log(err)
+    dispatch(setAlert({ message: 'Server error! Cannot get survey comments.', alertType: 'error'}))
   }
 }
 

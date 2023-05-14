@@ -2,9 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styles from './styles.module.sass';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchSurveys} from "../../services/survey-service";
-import {isPast} from "../../utils/date";
-import {Link} from "react-router-dom";
-import {Container, ToggleButton, ToggleButtonGroup} from "@mui/material";
+import {Container, Skeleton, ToggleButton, ToggleButtonGroup, Typography} from "@mui/material";
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ReorderIcon from '@mui/icons-material/Reorder';
 import DefaultListView from "./list-views/DefaultListView";
@@ -13,8 +11,6 @@ import SortedListView from "./list-views/SortedListView";
 function SurveysList() {
   const dispatch = useDispatch();
   const { surveys } = useSelector((state) => state.surveysReducer);
-
-
 
     const [listView, setListView] = useState('default')
 
@@ -45,9 +41,18 @@ function SurveysList() {
                 </ToggleButton>
             </ToggleButtonGroup>
         </Container>
+        {surveys && surveys.length > 0 && (
+            <div>
+                {listView === 'default' && <DefaultListView surveys={surveys} />}
+                {listView === 'sorted' && <SortedListView surveys={surveys} />}
+            </div>
+        )}
+        {!(surveys && surveys.length > 0) && (
+            <Typography variant="h6" component="h1" style={{paddingInline: 0, fontWeight: 700}}>
+                Нема опитувань
+            </Typography>
+        )}
 
-        {listView === 'default' && <DefaultListView surveys={surveys} />}
-        {listView === 'sorted' && <SortedListView surveys={surveys} />}
 
     </div>
   );
