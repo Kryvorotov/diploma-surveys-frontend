@@ -4,7 +4,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {createSurveys, deleteSurvey, editSurvey} from "../../services/survey-service";
 import {useNavigate, useParams} from "react-router-dom";
 import {convertToInput} from "../../utils/date";
-import {TextField, Button} from "@mui/material";
+import {TextField, Button, Card, Paper, Container, Divider, IconButton} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function CreateSurvey() {
   const dispatch = useDispatch();
@@ -66,38 +67,44 @@ function CreateSurvey() {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.input}>
-        <TextField label={'Назва'} onChange={(value) => setTitle(value.currentTarget.value)} value={title} required type="text" />
-      </div>
-      <div className={styles.dateWrapper}>
-        <div className={styles.input} >
-          <label htmlFor="">Початок опитування</label>
-          <TextField min={convertToInput()} required type="date" value={startAt} onChange={(value) => setStartAt(value.currentTarget.value)} />
-        </div>
-        <div className={styles.input} >
-          <label htmlFor="">Кінець опитування</label>
-          <TextField min={convertToInput(startAt)} required type="date" value={endAt} onChange={(value) => setEndAt(value.currentTarget.value)} />
-        </div>
-      </div>
-      <div>
-        {questions.map((question, index) => (
-          <div key={index}>
+      <Container>
+        <div className={styles.container}>
+          <div className={styles.input}>
+            <TextField label={'Назва'} onChange={(value) => setTitle(value.currentTarget.value)} value={title} required type="text" />
+          </div>
+          <div className={styles.dateWrapper}>
             <div className={styles.input} >
-              <TextField label={`Питання ${index+1}`} required type="text" value={question.text} onChange={(value) => onChange(value, index)} />
-               <Button variant="contained" onClick={() => deleteQuestion(index)}>Видалити</Button>
+              <label htmlFor="">Початок опитування</label>
+              <TextField min={convertToInput()} required type="date" value={startAt} onChange={(value) => setStartAt(value.currentTarget.value)} />
             </div>
+            <div className={styles.input} >
+              <label htmlFor="">Кінець опитування</label>
+              <TextField min={convertToInput(startAt)} required type="date" value={endAt} onChange={(value) => setEndAt(value.currentTarget.value)} />
+            </div>
+          </div>
+          <div className={styles.questions}>
+            {questions.map((question, index) => (
+                <div className={styles.question} key={index} >
+                  <TextField fullWidth className={styles.input} label={`Питання ${index+1}`} required type="text" value={question.text} onChange={(value) => onChange(value, index)} />
+                  <IconButton>
+                    <DeleteIcon onClick={() => deleteQuestion(index)}/>
+                  </IconButton>
+
+                </div>
+            ))}
+          </div>
+
+          <Button variant="contained" onClick={handleAddQuestion}>Додати питання</Button>
+
+          <div className={styles.buttons}>
+            <Button variant="contained" disabled={!questions.length || !title} onClick={handleSave}>Зберігти</Button>
+            {survey && <Button color="error" variant="contained" onClick={handleDelete}>Видалити</Button>}
 
           </div>
-        ))}
-      </div>
+        </div>
 
-      <Button variant="contained" onClick={handleAddQuestion}>Додати питання</Button>
 
-      <Button variant="contained" disabled={!questions.length || !title} onClick={handleSave}>Зберігти</Button>
-
-      {survey && <Button color="error" variant="contained" className={styles.deleteBtn} onClick={handleDelete}>Видалити</Button>}
-    </div>
+      </Container>
   );
 }
 
