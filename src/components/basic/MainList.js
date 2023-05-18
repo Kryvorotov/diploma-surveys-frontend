@@ -7,9 +7,20 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PollIcon from "@mui/icons-material/Poll";
 import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {deleteSurvey, fetchSurveys} from "../../services/survey-service";
 
 const MainList = ({surveys}) => {
     const navigate = useNavigate()
+    const dispatch = useDispatch();
+
+    const handleDelete = async (surveyId) => {
+
+        const ok = await dispatch(deleteSurvey(surveyId));
+        if (ok) {
+            dispatch(fetchSurveys());
+        }
+    }
 
     return (
         <List>
@@ -33,7 +44,7 @@ const MainList = ({surveys}) => {
                                 </IconButton>
                             )}
                             <IconButton>
-                                <DeleteIcon/>
+                                <DeleteIcon onClick={() => handleDelete(survey.id)}/>
                             </IconButton>
                         </div>
                     }
